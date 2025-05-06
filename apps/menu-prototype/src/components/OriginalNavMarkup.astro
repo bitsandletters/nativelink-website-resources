@@ -1,0 +1,99 @@
+---
+import svgNativelinkLogo from '../assets/nativelink-logo.svg';
+---
+<div class="nl-nav-outer-wrap">
+  <div class="nl-nav">
+    <div class="nl-nav-container">
+      <a href="/" class="nl-nav-logo">
+        <img src={svgNativelinkLogo.src} alt="NativeLink Logo" />
+      </a> <!--/ .nl-nav-logo -->
+
+      <nav class="nl-nav-links">
+        <ul class="nl-nav-items">
+          <li class="nl-nav-item">
+            <a class="nl-nav-link" href="/">Customers</a>
+          </li>
+          <!-- <a class="nl-nav-item nl-nav-link" href="/">Product</a> -->
+          <li class="nl-nav-item">
+            <div class="nl-dropdown nl-nav-dropdown">
+              <button class="nl-nav-item nl-dropdown-button">
+                <span>Product</span>
+                <i class="nl-nav-dropdown-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Pro 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2025 Fonticons, Inc.--><path d="M256 429.3l22.6-22.6 192-192L493.3 192 448 146.7l-22.6 22.6L256 338.7 86.6 169.4 64 146.7 18.7 192l22.6 22.6 192 192L256 429.3z"/></svg>
+                </i>
+              </button>
+              <div class="nl-dropdown-content">
+                <ul class="nl-dropdown-items">
+                  <li class="nl-dropdown-item">
+                    <a href="/">
+                      <i class="fab fa-slack fa-fw"></i>
+                      <span class="nl-dropdown-item-label">Slack</span>
+                    </a>
+                  </li>
+                  <li class="nl-dropdown-item">
+                    <a href="/">
+                      <i class="fab fa-github fa-fw"></i>
+                      <span class="nl-dropdown-item-label">GitHub</span>
+                    </a>
+                  </li>
+                  <li class="nl-dropdown-item">
+                    <a href="/">
+                      <i class="fass fa-newspaper fa-fw"></i>
+                      <span class="nl-dropdown-item-label">Blog</span>
+                    </a>
+                  </li>
+                  <li class="nl-dropdown-item">
+                    <a href="/">
+                      <i class="fass fa-file-code fa-fw"></i>
+                      <span class="nl-dropdown-item-label">Docs</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        <li class="nl-nav-item">
+          <a class="nl-nav-link" href="/">Company</a>
+        </li>
+        <li class="nl-nav-item">
+          <a class="nl-nav-link" href="/">Pricing</a>
+        </li>
+        </ul>
+      </nav> <!--/ .nl-nav-links -->
+
+      <div class="nl-nav-cta">
+        <div class="nl-dropdown nl-cta-dropdown">
+          <button class="nl-dropdown-button nl-cta-dropdown-button">
+            <span>Get started</span>	
+            <i class="nl-dropdown-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Pro 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2025 Fonticons, Inc.--><path d="M256 429.3l22.6-22.6 192-192L493.3 192 448 146.7l-22.6 22.6L256 338.7 86.6 169.4 64 146.7 18.7 192l22.6 22.6 192 192L256 429.3z"/></svg>
+            </i>
+          </button>
+          <div class="nl-dropdown-content get-started-dropdown">
+            <div>
+              <h3>Try for free</h3>
+              <p>Sign in with GitHub or Google, no credit card required</p>
+              <a href="/" class="get-started-cta-link">
+                <span>Get started</span>
+                <i class="fas fa-arrow-right fa-fw"></i>
+              </a>
+            </div>
+            <hr>
+            <div>
+              <h3>Get a demo</h3>
+              <p>Talk to a member of our team to learn more about how NativeLink can help</p>
+              <a href="/" class="get-started-cta-link">
+                <span>Schedule a demo</span>
+                <i class="fas fa-arrow-right fa-fw"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <button class="nl-nav-hamburger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" fill="currentColor"><!--!Font Awesome Pro 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2025 Fonticons, Inc.--><path d="M0 64l448 0 0 64L0 128 0 64zM64 224l448 0 0 64L64 288l0-64zM448 384l0 64L0 448l0-64 448 0z"/></svg>
+        </button>
+      </div> <!--/ .nl-nav-cta -->
+    </div> <!--/ .nl-nav-container -->
+  </div> <!--/ .nl-nav -->
+</div> <!--/ .nl-nav-outer-wrap -->

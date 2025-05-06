@@ -1,0 +1,720 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NavMarkup from '../components/NavMarkup.html';
+---
+
+<Layout>
+	<NavMarkup />
+
+	<div>
+		<div class="nl-hero" style="width:90%;margin-inline:auto;min-height: 200vh;">
+			<div class="nl-hero-container">
+				<h1><a href="#">NativeLink</a></h1>
+	
+			<p>NativeLink is a revolutionary platform that transforms how developers build and deploy applications. Our cutting-edge technology stack enables seamless integration with existing workflows while providing unprecedented performance and scalability. Whether you're working on a small project or enterprise-grade applications, NativeLink has the tools and infrastructure to support your development journey.</p>
+	
+			<p>With NativeLink, you can say goodbye to complex deployment processes and hello to streamlined development. Our platform automates many of the tedious tasks that traditionally slow down development cycles, allowing teams to focus on what matters most - building great software. The intuitive interface and comprehensive documentation make it easy for developers of all skill levels to get started quickly.</p>
+	
+			<p>Security and reliability are at the core of everything we do at NativeLink. Our infrastructure is built with enterprise-grade security measures and undergoes regular audits to ensure the highest standards of protection for your applications and data. We understand that trust is paramount in today's digital landscape, which is why we've made security a fundamental pillar of our platform.</p>
+	
+			<p>Join thousands of developers who have already transformed their development process with NativeLink. Our community-driven approach means you'll have access to a wealth of resources, support, and best practices from fellow developers. Whether you're looking to optimize your current workflow or completely revolutionize your development process, NativeLink provides the tools and support you need to succeed.</p>
+	
+			<p>NativeLink is a revolutionary platform that transforms how developers build and deploy applications. Our cutting-edge technology stack enables seamless integration with existing workflows while providing unprecedented performance and scalability. Whether you're working on a small project or enterprise-grade applications, NativeLink has the tools and infrastructure to support your development journey.</p>
+	
+			<p>With NativeLink, you can say goodbye to complex deployment processes and hello to streamlined development. Our platform automates many of the tedious tasks that traditionally slow down development cycles, allowing teams to focus on what matters most - building great software. The intuitive interface and comprehensive documentation make it easy for developers of all skill levels to get started quickly.</p>
+	
+			<p>Security and reliability are at the core of everything we do at NativeLink. Our infrastructure is built with enterprise-grade security measures and undergoes regular audits to ensure the highest standards of protection for your applications and data. We understand that trust is paramount in today's digital landscape, which is why we've made security a fundamental pillar of our platform.</p>
+	
+			<p>Join thousands of developers who have already transformed their development process with NativeLink. Our community-driven approach means you'll have access to a wealth of resources, support, and best practices from fellow developers. Whether you're looking to optimize your current workflow or completely revolutionize your development process, NativeLink provides the tools and support you need to succeed.</p>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<script src="https://kit.fontawesome.com/626ebaf51b.js" crossorigin="anonymous"></script>
+<script type="module" is:inline>
+	import { animate, scroll } from "https://cdn.jsdelivr.net/npm/motion@11.13.5/+esm"
+	import {computePosition, autoPlacement, arrow, offset} from 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.13/+esm';
+
+	const navbar = document.querySelector('.nl-nav-outer-wrap');
+	const scrollOffset = 40;
+
+	const mobileQuery = window.matchMedia('(max-width: 48rem)');
+
+	window.addEventListener('scroll', () => {
+		if (window.scrollY > scrollOffset) {
+			navbar.classList.add('scrolled');
+		} else {
+			navbar.classList.remove('scrolled');
+		}
+	});
+
+	document.body.addEventListener('click', (e) => {
+		const target = e.target;
+		if(!target) return;
+
+		const clickedInsideNav = !!target.closest('.nl-nav');
+		const clickedInsideDropdown = !!target.closest('.nl-dropdown');
+		
+		if(!clickedInsideNav && !clickedInsideDropdown) {
+			console.log("Click outside of nav or dropdown", target);
+			document.querySelector('.nl-nav').classList.remove('is-open');
+			resetDropdowns();
+		}
+	});
+
+	const dropdowns = document.querySelectorAll('.nl-dropdown');
+
+	function resetDropdowns(currentDropdown = null) {
+		const alreadyOpen = document.querySelector('.nl-dropdown.is-open');
+		if(alreadyOpen && alreadyOpen !== currentDropdown) {
+			alreadyOpen.classList.remove('is-open');
+		}
+
+		const arrowElements = currentDropdown?.querySelectorAll	('.nl-dropdown-arrow');
+		if(arrowElements) {
+			arrowElements.forEach(arrowElement => {
+				arrowElement.remove();
+			});
+		}
+
+		dropdowns.forEach(dropdown => {
+			if(dropdown === currentDropdown) return;
+			dropdown.classList.remove('is-open');
+			const content = dropdown.querySelector('.nl-dropdown-content');
+			if(!content) return;
+
+			dropdown.removeAttribute('style');
+			content.removeAttribute('style');
+		});
+	}
+
+	const navMenu = document.querySelector('.nl-nav');
+	navMenu?.addEventListener('click', async (e) => {
+		const target = e.target;
+		if(!target) return;
+
+		// Find ancestor with the class
+		const button = target.closest('.nl-dropdown-button');
+		if(!button) return;
+
+		const dropdown = button.parentElement;
+		if(!dropdown) return;
+
+		// Get the button and content
+		const content = dropdown.querySelector('.nl-dropdown-content');
+		if(!content) return;
+
+		resetDropdowns(dropdown);
+
+		const isOpen = dropdown.classList.contains('is-open');
+		const isCta = dropdown.classList.contains('nl-cta-dropdown');
+
+		// Simpler behavior on mobile
+		if(mobileQuery.matches && !isCta) {
+			console.log("Opening dropdown on mobile", dropdown, content);
+
+			// Reset style attribute
+			Object.assign(content.style, {
+				opacity: isOpen ? 0 : 1,
+				visibility: isOpen ? 'hidden' : 'visible',
+				pointerEvents: isOpen ? 'none' : 'auto',
+				display: isOpen ? 'none' : 'block',
+				position: 'relative',
+			});
+			dropdown.classList.toggle('is-open');
+			return;
+		}
+
+		// Append an arrow element
+		let arrowElement = null;
+		if(content.querySelector('.nl-dropdown-arrow')) {	
+			arrowElement = content.querySelector('.nl-dropdown-arrow');
+		} else {
+			arrowElement = document.createElement('div');
+			arrowElement.classList.add('nl-dropdown-arrow');
+			content.appendChild(arrowElement);
+		}
+
+		const position = await computePosition(button, content, {
+			placement: 'bottom',
+			middleware: [
+				autoPlacement({
+					allowedPlacements: ['bottom', 'bottom-start', 'bottom-end'],
+				}),
+				offset({
+					mainAxis: 12,
+				}),
+				arrow({
+					element: arrowElement,
+				}),
+			],
+		});
+
+		let {x, y, middlewareData: { arrow: { x: arrowX, y: arrowY } } } = position;
+
+		if(mobileQuery.matches && isCta) {
+			x = 0;
+		}
+
+		Object.assign(content.style, {
+			left: `${x}px`,
+			top: `${y}px`,
+			transformOrigin: 'top',
+			position: 'absolute',
+		});
+
+		const arrowSize = 16;
+
+		Object.assign(arrowElement.style, {
+			visibility: isOpen ? 'hidden' : 'visible',
+			left: `${arrowX}px`,
+			top: `-${arrowSize / 2}px`,
+			width: `${arrowSize}px`,
+			height: `${arrowSize}px`,
+		});
+
+		await animate(content, {
+			scaleY: isOpen ? 0 : 1,
+			opacity: isOpen ? 0 : 1,
+			visibility: isOpen ? 'hidden' : 'visible',
+			pointerEvents: isOpen ? 'none' : 'auto',
+		}, {
+			duration: 0.1,
+			easing: 'ease-in-out',
+		}).then(() => {
+			console.log("Animation complete", dropdown);
+			if(isOpen) {
+				dropdown.removeAttribute('style');
+			}
+			dropdown.classList.toggle('is-open');
+		});
+
+	});
+
+	const hamburger = document.querySelector('.nl-nav-hamburger');
+	hamburger?.addEventListener('click', (e) => {
+		const nav = document.querySelector('.nl-nav');
+		if(!nav) return;
+		nav.classList.toggle('is-open');
+	});
+
+	window.addEventListener('resize', () => {
+		const nav = document.querySelector('.nl-nav');
+		if(!nav) return;
+		nav.classList.remove('is-open');
+		resetDropdowns();
+	});
+
+</script>
+
+<style is:global>
+:root {
+	--nl-dropdown-color-bg: oklch(from #6949f1 38% 0.09 h);
+	--nl-dropdown-color-bg-hover: oklch(from #6949f1 40% 0.18 h);
+	--nl-dropdown-color-on-bg: white;
+}
+
+.nl-nav-outer-wrap {
+	height: 5rem;
+}
+
+.nl-nav-hamburger {
+	display: none;
+}
+
+.nl-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+  right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1.5rem 0;
+  z-index: calc(Infinity);
+}
+
+.nl-nav:before {
+	content: '';
+	display: block;
+	position: absolute;
+	inset: 0;
+	background-color: #0009;
+
+	background-color: oklch(from #6949f1 4% 0.08 h / 0.65);
+	backdrop-filter: blur(8px) saturate(180%);
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+	z-index: -1;
+	box-shadow: 0 0 10px 10px #0009;
+	border-bottom: 1px solid #fff3;
+}
+
+.scrolled .nl-nav:before {
+	opacity: 1;
+}
+
+.nl-nav a {
+	text-decoration: none;
+}
+
+.nl-nav-container {
+	display: grid;
+	grid-template-columns: 1fr minmax(44rem, 57cqi) 1fr;
+	align-items: center;
+	width: calc(100vw - 4rem);
+	justify-self: center;
+	row-gap: 1rem;
+	column-gap: 1.5rem;
+}
+
+.nl-nav-logo {
+	width: clamp(110px, 12.5cqi, 180px);
+	justify-self: start;
+}
+
+.nl-nav-logo img {
+	width: 100%;
+	height: auto;
+}
+
+.nl-nav-links {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: 1fr;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	justify-self: center;
+	border-radius: 0.5rem;
+	background-color: #000d;
+}
+
+.nl-nav-items {
+	display: contents;
+	margin: 0;
+	padding: 0;
+}
+
+.nl-dropdown-button {
+	border: 0;
+	cursor: pointer;
+	border-radius: 0;
+	color: inherit;
+}
+
+.nl-nav svg {
+	width: auto;
+	height: 0.875rem;
+	fill: currentColor;
+}
+
+.nl-nav-item {
+	border-right: 1px solid oklch(from #6949f1 38% 0.12 h);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	/* position: relative; */
+}
+
+.nl-nav-items :is(.nl-nav-link, .nl-dropdown-button) {
+	display: flex;
+	column-gap: 0.5rem;
+	align-items: center;
+	justify-content: center;
+	padding: 0.8rem 1rem;
+	background-color: transparent;
+	font-weight: 400;
+	font-size: 15px;
+	line-height: 16px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-family: 'IBM Plex Mono', monospace;
+}
+
+.nl-dropdown-arrow {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 10px;
+	height: 10px;
+	background-color: color-mix(in srgb, var(--nl-dropdown-color-bg), white 16%);
+	transform: rotate(45deg);
+	z-index: 99;
+}
+
+.nl-dropdown-items {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	list-style: none;
+	margin: 0;
+	padding: 1rem 0.25rem;
+	min-width: 200px;
+}
+
+.nl-dropdown-item {
+	display: contents;
+}
+
+.nl-dropdown-item > :is(a, button) {
+	display: flex;
+	column-gap: 0.5rem;
+	align-items: center;
+	padding: 0.75rem calc(1rem - 4px);
+	margin-inline: 4px;
+	border-radius: 0.25rem;
+	background-color: transparent;
+	color: inherit;
+	font-size: 17px;
+	line-height: 18px;
+	cursor: pointer;
+}
+
+.nl-dropdown-item > a:hover, .nl-dropdown-item > button:hover {
+	background-color: color-mix(in srgb, var(--nl-dropdown-color-bg-hover), black 36%);
+}
+
+.nl-nav-item:first-of-type {
+	border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.nl-nav-item:last-of-type {
+	border-radius: 0 0.5rem 0.5rem 0;
+	border-right: none;
+}
+
+.nl-dropdown-button {
+	width: 100%;
+}
+
+.nl-dropdown.is-open .nl-dropdown-button, 
+.nl-dropdown.is-open .nl-dropdown-button * {
+	position: relative;
+	z-index: 2;
+}
+
+.nl-nav-links .nl-dropdown.is-open .nl-dropdown-button {
+	color: white;
+}
+
+.nl-dropdown .nl-dropdown-content {
+	position: absolute;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	top: 0;
+	left: 0;
+}
+
+/* .nl-nav-links .nl-dropdown .nl-dropdown-content {
+	position: relative;
+	z-index: 1;
+	display: none;
+} */
+
+.nl-nav-links .nl-dropdown.is-open .nl-dropdown-content {
+	display: block;
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.nl-dropdown-items {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	list-style: none;
+	margin: 0;
+	padding: 1rem 0.25rem;
+	min-width: 200px;
+}
+
+.nl-dropdown-item {
+	display: contents;
+}
+
+.nl-dropdown-item > :is(a, button) {
+	display: flex;
+	column-gap: 0.5rem;
+	align-items: center;
+	padding: 0.75rem calc(1rem - 4px);
+	margin-inline: 4px;
+	border-radius: 0.25rem;
+	background-color: transparent;
+	color: inherit;
+	font-size: 17px;
+	line-height: 18px;
+	cursor: pointer;
+}
+
+.nl-nav-links .nl-dropdown.is-open .nl-dropdown-button::after {
+	content: '';
+	display: block;
+	background-color: oklch(from #6949f1 40% 0.18 h);
+	width: calc(100% - 1rem);
+	position: absolute;
+	top: 0.25rem;
+	left: 0.5rem;
+	right: 0.5rem;
+	bottom: 0.25rem;
+	border-radius: 0.5rem;
+	z-index: 1;
+}
+
+.nl-dropdown .nl-dropdown-content {
+	background-color: var(--nl-dropdown-color-bg);
+	background-image: linear-gradient(to bottom, color-mix(in srgb, var(--nl-dropdown-color-bg), white 16%), var(--nl-dropdown-color-bg) 60%);
+	color: var(--nl-dropdown-color-on-bg);
+	border-radius: 0.5rem;
+	box-shadow: 0px 1px 2px 2px #0003, 0 2px 10px 2px #0006, inset 0 0 0 1px #fff2;
+}
+
+@media (width >= 48rem) {
+
+}
+
+.nl-nav-cta {
+	justify-self: end;
+}
+
+.nl-nav .nl-cta-dropdown-button {
+	background-color: #fff;
+	color: #000;
+	border-radius: 0.5rem;
+	padding: 0.4rem 0.75rem;
+	font-size: 16px;
+	line-height: 18px;
+	font-weight: 500;
+  column-gap: 0.75rem !important;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px !important;
+	font-family: 'Mona Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-variation-settings: 'wdth' 88, 'wght' 640;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.get-started-dropdown {
+	display: flex;
+	flex-direction: column;
+	min-width: 200px;
+	max-width: 400px;
+	width: 100%;
+}
+
+.get-started-dropdown * {
+	margin: 0;
+}
+
+.get-started-dropdown > div:not(.nl-dropdown-arrow) {
+	display: flex;
+	flex-direction: column;
+	padding: 1.5rem 1.5rem 2.5rem;
+}
+
+.get-started-dropdown > div:not(:first-of-type):not(.nl-dropdown-arrow) {
+	border-top: 1px solid #fff3;
+	/* gap: 1rem; */
+}
+
+.get-started-dropdown hr {
+	border: 0;
+	border-top: 1px solid #fff3;
+	margin: 1rem 0;
+}
+
+.get-started-dropdown h3 {
+	font-size: 1.35rem;
+	font-weight: 600;
+}
+
+.get-started-dropdown p {
+	font-size: 1rem;
+	line-height: 1.35;
+	margin-bottom: 0.8rem;
+	color: color-mix(in srgb, currentColor 70%, transparent);
+}
+
+
+.get-started-cta-link {
+	display: flex;
+	column-gap: 0.5rem;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+	background-color: oklch(98.5% 0 0);
+	color: #000 !important;
+	font-size: 17px;
+	line-height: 18px;
+	font-weight: 500;
+	box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.get-started-cta-link span {
+	flex: 1;
+}
+
+@media (width <= 68rem) {
+	.nl-nav-outer-wrap {
+		height: 8.5rem;
+	}
+
+	.nl-nav-container {
+		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.nl-nav-links {
+		grid-row: 2;
+		grid-column: 1 / 3;
+	}
+
+	.nl-nav-cta, .nl-nav-logo {
+		grid-row: 1;
+	}
+
+	.nl-nav-logo {
+		width: clamp(110px, 28cqi, 180px);
+	}
+}
+
+@media (width <= 48rem) {
+	.nl-nav {
+		padding-inline: 0;
+	}
+
+	.nl-nav-container {
+		width: calc(100vw - 2.5rem);
+	}
+
+	.nl-nav-hamburger {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: 24px;
+		height: 24px;
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+		color: inherit;
+		padding: 0;
+	}
+
+	.nl-nav-hamburger svg {
+		width: 100%;
+		height: 100%;
+	}
+
+	.nl-nav-cta {
+		display: flex;
+		column-gap: 1rem;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	.nl-nav-container {
+		grid-template-columns: min-content 1fr;
+		grid-template-rows: 1fr;
+	}
+
+	.nl-nav .nl-nav-links {
+		--mobile-nav-color: oklch(from var(--nl-dropdown-color-bg) 32% calc(c * 1.1) h);
+		border-radius: 0 0 1rem 1rem;
+		transition: transform 0.3s ease, opacity 0.3s ease;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: min-content;
+		background-color: var(--mobile-nav-color);
+		background-image: linear-gradient(to bottom, var(--mobile-nav-color), color-mix(in srgb, var(--mobile-nav-color), black 46%));
+		padding-top: 6rem;
+		padding-inline: 1.25rem;
+		padding-bottom: 2.75rem;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: stretch;
+		gap: 1rem;
+		z-index: -1;
+	}
+
+	.nl-nav-outer-wrap:before {
+		content: '';
+		display: block;
+		position: absolute;
+		inset: 0;
+		background-color: #0009;
+		opacity: 0;
+		visibility: hidden;
+		z-index: 0;
+		backdrop-filter: blur(2px) saturate(180%);
+		pointer-events: none;
+		user-select: none;
+		transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+	}
+
+	.nl-nav-outer-wrap:has(*.nl-nav.is-open):before {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.nl-nav:not(.is-open) .nl-nav-links {
+		/* display: none; */
+		opacity: 0;
+		transform: translateY(-100%);
+	}
+
+	.nl-nav.is-open .nl-nav-links {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.nl-nav-items :is(.nl-nav-link, .nl-dropdown-button) {
+		justify-content: flex-start;
+		text-align: left;
+		border-radius: 0;
+		border: none;
+	}
+
+	.nl-nav-items .nl-nav-item {
+		border: 0;
+	}
+
+	.nl-dropdown:not(.nl-cta-dropdown) .nl-dropdown-content {
+		width: 100%;
+		max-width: 100%;
+		padding: 0;
+		background: unset;
+		box-shadow: unset;
+		border-radius: 0;
+		border: none;
+	}
+
+	.nl-dropdown:not(.nl-cta-dropdown) .nl-dropdown-content .nl-dropdown-items {
+		padding-block-start: 0.5rem;
+		padding-block-end: 0;
+		border-inline-start: 2px solid #fff6;
+	}
+
+	.nl-dropdown:not(.nl-cta-dropdown) .nl-dropdown-content .nl-dropdown-item > :is(a, button) {
+		padding-inline: 0.5rem;
+	}
+
+	.nl-nav-links .nl-dropdown:not(.nl-cta-dropdown).is-open .nl-dropdown-button {
+		color: #000;
+	}
+
+	.nl-nav-links .nl-dropdown:not(.nl-cta-dropdown).is-open .nl-dropdown-button::after {
+		background-color: white;
+		width: 100%;
+		inset: 0;
+		border-radius: 0.25rem 0.25rem 0 0;
+	}
+}
+</style>

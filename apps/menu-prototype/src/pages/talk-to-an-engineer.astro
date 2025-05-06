@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+
+<style is:inline>
+  .nl-talk-to-an-engineer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    container-name: engineer-form;
+    container-type: inline-size;
+    padding-block: 1.5rem;
+    height: 100%;
+  }
+
+  .nl-talk-to-an-engineer .meetings-iframe-container {
+    background-color: #fff;
+    padding: 1rem 1rem 0.5rem;
+    width: 100%;
+    max-width: 850px;
+    margin: 0;
+  }
+  
+  @container engineer-form (max-width: 400px) {
+    .nl-talk-to-an-engineer .meetings-iframe-container {
+      padding: 0;
+    }
+  }
+
+  @container engineer-form (max-width: 480px) {
+    .nl-talk-to-an-engineer .meetings-iframe-container {
+      max-width: 480px;
+      border-radius: 0;
+    }
+  }
+  
+  @container engineer-form (480px <= width <= 664px) {
+    .nl-talk-to-an-engineer .meetings-iframe-container {
+      max-width: 480px;
+      border-radius: 1rem;
+    }
+  }
+
+  @container engineer-form (min-width: 850px) {
+    .nl-talk-to-an-engineer .meetings-iframe-container {
+      border-radius: 1rem;
+    }
+  }
+
+  .nl-talk-to-an-engineer .meetings-iframe-container iframe {
+    border: 0;
+    margin: 0;
+  }
+</style>
+
+<div class="nl-talk-to-an-engineer">
+  <!-- Start of Meetings Embed Script -->
+  <div class="meetings-iframe-container" data-src="https://meetings.hubspot.com/jake-newfield?embed=true"></div>
+  <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"></script>
+  <!-- End of Meetings Embed Script -->
+</div>
+
+</Layout>
