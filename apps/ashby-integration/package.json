@@ -1,0 +1,15 @@
+{
+  "name": "nl-website-connector",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "csv-stringify": "^6.5.2",
+    "hono": "^4.7.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "vercel": "^32.4.1"
+  }
+}
